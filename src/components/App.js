@@ -54,9 +54,7 @@ function App() {
     }
   }, [token])
   
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  
   //console.log(user)
   return (
     <div>
