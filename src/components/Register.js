@@ -22,12 +22,16 @@ function Register({ setToken, navigate }) {
       setToken(results.data.token);
       window.localStorage.setItem("token", results.data.token)
       navigate('/');
+    } else {
+      
     }
     
   }
   
   return (
+    
     <form onSubmit={handleSubmit} className="registration-form">
+      <h1>Register</h1>
       <label htmlFor="username-input"></label>
       <input
         id="username-input"
