@@ -20,10 +20,16 @@ function Nav({ setToken, setIsLoggedIn, isLoggedIn }) {
           <button>
             <Link to="/">See all posts</Link>
           </button>
+          <button>
+            <Link to="/profile">View Profile</Link>
+          </button>
           <button onClick={logout}>Log Out</button>
         </>
       ) : (
         <>
+          <button>
+            <Link to="/">See all posts</Link>
+          </button>
           <button>
             <Link to="/login">Login</Link>
           </button>

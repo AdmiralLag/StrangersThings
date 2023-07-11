@@ -2,24 +2,27 @@ import React, { useState, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/posts.css';
 
-function Posts({ posts }) {
+function Profile({ posts, userData }) {
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 5;
+
+  const { username, _id: userId } = userData;
+  const userPosts = posts.filter(post => post.author._id === userId);
 
   // Logic for displaying posts
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost); //create pagnation thanks google!
+  const currentPosts = userPosts.slice(indexOfFirstPost, indexOfLastPost); // Filtered user posts for pagination
 
   // Logic for displaying page numbers
   const pageNumbers = [];
-  <p>Go To Page</p>
-  for (let i = 1; i <= Math.ceil(posts.length / postsPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(userPosts.length / postsPerPage); i++) {
     pageNumbers.push(i);
   }
 
   return (
-    <>
+    <Fragment>
+      <p>Go To Page</p>
       {currentPosts.map((post) => ( 
         <div key={post._id} className="post-wrapper">
           <div className="post-title">{post.title}</div>
@@ -27,12 +30,11 @@ function Posts({ posts }) {
           <div className="post-description-price">{post.price}</div>
           <div className='post-description-price'>{post._id}</div>
           <div className="post-info">
-
             {post.isAuthor ? (
               <>
                 <span>Posted by: {post.author.username}</span>
                 <button>Delete</button>
-             <Link to={`/updatepost/${post._Id}`} ><button>Edit Post</button></Link>
+                <Link to={`/updatePost/${post._id}`}><button>Edit Post</button></Link>
               </>
             ) : (
               <>
@@ -51,8 +53,8 @@ function Posts({ posts }) {
           </button>
         ))}
       </div>
-    </>
+    </Fragment>
   );
 }
 
-export default Posts;
+export default Profile;

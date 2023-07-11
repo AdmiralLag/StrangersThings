@@ -9,13 +9,15 @@ import {
 } from './';
 
 import { fetchPosts, myData } from '../ajax-requests';
-
+import Profile from './Profile';
+import UpdatePost from './UpdatePost';
 
 function App() {
   const [token, setToken] = useState('');
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   
   const navigate = useNavigate();
   
@@ -28,7 +30,7 @@ function App() {
   async function getPosts() {
     const results = await fetchPosts(token);
     if (results.success) {
-      setPosts(results.data.posts)
+      setPosts(results.data.posts);
     }
   }
   
@@ -36,6 +38,7 @@ function App() {
     const results = await myData(token);
     if (results.success) {
       setUser(results.data);
+      setIsLoading(false);
     }
   }
   
@@ -46,12 +49,15 @@ function App() {
   useEffect(() => {
     getPosts();
     if (token) {
-      getMyData();
       setIsLoggedIn(true);
+      getMyData(); // Move the call to getMyData here
     }
   }, [token])
   
-  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+  //console.log(user)
   return (
     <div>
       <Nav 
@@ -76,6 +82,14 @@ function App() {
           path='/create-post'
           element={<CreatePost token={token} getPosts={getPosts} />}
         />
+        <Route 
+          path='/Profile' 
+          element={<Profile posts={posts} userData={user}/>} 
+        />
+         <Route
+        path='/updatepost/:postID'
+        element={<UpdatePost token={token} posts={posts} getPosts={getPosts}/>}>
+        </Route>
       </Routes>
     </div>
   );
